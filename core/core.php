@@ -21,7 +21,7 @@ $offset = ($page - 1) * $size;
 
 function getPhotosPaginated($connection, $size, $offset)
 {
-    if ($statement = mysqli_prepare($connection, 'select * from photos LIMIT ? OFFSET  ?')) {
+    if ($statement = mysqli_prepare($connection, 'select * from photo LIMIT ? OFFSET  ?')) {
         mysqli_stmt_bind_param($statement, 'ii', $size, $offset);
         mysqli_stmt_execute($statement);
         $result = mysqli_stmt_get_result($statement);
@@ -69,7 +69,7 @@ function paginate($total, $currentPage, $size)
 
 function logMessage($level, $message)
 {
-    $file = fopen('application.log', "a");
+    $file = fopen('app.log', "a");
     fwrite($file, "[$level] $message" . PHP_EOL);
     fclose($file);
 }
