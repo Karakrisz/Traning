@@ -7,6 +7,10 @@ $config = [
     "DB_NAME" => "traning"
 ];
 
-$config = mysqli_connect($config['DB_HOST'], $config['DB_USER'], $config['DB_PASS'], $config['DB_NAME']);
+$connection = mysqli_connect($config['DB_HOST'], $config['DB_USER'], $config['DB_PASS'], $config['DB_NAME']);
 $sql = "set names utf8";
-mysqli_query($config, $sql);
+mysqli_query($connection, $sql);
+
+if (!$connection) {
+    die('Connection :error:' . mysqli_connect_error());
+}

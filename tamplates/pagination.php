@@ -1,5 +1,5 @@
 <nav>
     <ul class="pagination">
-        <?= paginate(count($pictures), $page, $size) ?>
+        <?= paginate($total, $page, $size) ?>
     </ul>
 </nav>
