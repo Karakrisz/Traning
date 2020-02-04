@@ -1,10 +1,5 @@
 <?php
 
-$size = $_GET['size'] ?? 15;
-$page = $_GET['page'] ?? 1;
-
-$possibilePageSizes = [10, 25, 30, 40, 50];
-
 function getTotal($connection)
 {
     if ($result = mysqli_query($connection, 'select count(*) as count from photos')) {
@@ -16,8 +11,6 @@ function getTotal($connection)
     }
 }
 
-$total = getTotal($connection);
-$offset = ($page - 1) * $size;
 
 function getPhotosPaginated($connection, $size, $offset)
 {
@@ -32,7 +25,6 @@ function getPhotosPaginated($connection, $size, $offset)
     }
 }
 
-$content = getPhotosPaginated($connection, $size, $offset);
 
 function paginate($total, $currentPage, $size)
 {
@@ -78,4 +70,68 @@ function errorPage()
 {
     include "tamplates/error.php";
     die();
+}
+
+$routes = [];
+
+function route($action, $callable)
+{
+    global $routes;
+    $pattern = "%^$action$%";
+    $routes[$pattern] = $callable;
+}
+
+function dispatch($action, $notFound)
+{
+    global $routes;
+    foreach ($routes as $pattern => $callable) {
+        if (preg_match($pattern, $action, $matches)) {
+            return $callable($matches);
+        }
+    }
+    return $notFound();
+}
+
+
+function homeController()
+{
+    global $config;
+    $size = $_GET['size'] ?? 15;
+    $page = $_GET['page'] ?? 1;
+    $connection = mysqli_connect($config['DB_HOST'], $config['DB_USER'], $config['DB_PASS'], $config['DB_NAME']);
+    $total = getTotal($connection);
+    $offset = ($page - 1) * $size;
+    $content = getPhotosPaginated($connection, $size, $offset);
+    $possibilePageSizes = [10, 25, 30, 40, 50];
+
+    return [
+        "home",
+        [
+            "content" => $content,
+            "total" => $total,
+            "size" => $size,
+            "page" => $page,
+            "offset" => $offset,
+            "possibilePageSizes" => $possibilePageSizes
+        ]
+    ];
+}
+
+function aboutController()
+{
+    echo 'about';
+}
+
+function singleImageController($params)
+{
+    echo 'post with word id:' . $params['id'];
+}
+
+function notFoundController()
+{
+    return [
+        "404", [
+            "title" => "The page you are looking for is not found."
+        ]
+    ];
 }

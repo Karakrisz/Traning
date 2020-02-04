@@ -1,2 +1,8 @@
 [ERROR] Query error:Table 'traning.photo' doesn't exist
 [ERROR] Query error:Table 'traning.photo' doesn't exist
+[ERROR] Query error:Table 'traning.phtos' doesn't exist
+[ERROR] Query error:You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'OFFET  ?' at line 1
+[ERROR] Query error:
+[ERROR] Query error:
+[ERROR] Query error:
+[ERROR] Query error:
